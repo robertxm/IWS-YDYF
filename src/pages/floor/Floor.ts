@@ -40,6 +40,15 @@ export class FloorPage {
     if (this.type == 3){
       this.readystr = "待交付";
       this.passstr = "已交付";
+    // } else if (this.type == 3){
+    //   this.readystr = "待交付";
+    //   this.passstr = "已交付";
+    // } else if (this.type == 3){
+    //   this.readystr = "待交付";
+    //   this.passstr = "已交付";
+    } else {
+      this.readystr = "待接待";
+      this.passstr = "已接待";
     }
   }
 

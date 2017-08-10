@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+import {NativeService } from '../providers/nativeservice';
 
 @Injectable()
 export class HttpService {
 
-  constructor(private http: Http) {
+  constructor(private http: Http,public nativeservice: NativeService) {
   }
 
   public get(url: string, paramObj: any) {    
@@ -83,6 +84,7 @@ export class HttpService {
       console.error(msg + '，请检查路径是否正确');
     }
     console.log(error);
+    this.nativeservice.hideLoading();
     alert(msg);//这里使用ToastController
     //return { success: false, msg: msg };
     throw msg;

@@ -42,7 +42,7 @@ export class IssueviewPage {
 	showbutton: boolean;
 	versionid: number;
 	ResponsibleId: string;
-	userrole:Array<string> = [];
+	userrole: Array<string> = [];
 	constructor(public localStorage: LocalStorage, public initBaseDB: initBaseDB, public navCtrl: NavController, public alertCtrl: AlertController,
 		public params: NavParams, private modalCtrl: ModalController) {
 		this.issueid = this.params.get('issueid');
@@ -76,15 +76,15 @@ export class IssueviewPage {
 			this.registertime = dt.toLocaleString();
 			console.log(this.registertime);
 			if (issuelist.LimitDate) {
-               dt = new Date(issuelist.LimitDate)
-			this.duetime = dt.toLocaleString();
+				dt = new Date(issuelist.LimitDate)
+				this.duetime = dt.toLocaleString();
 			}
-			
+
 			if (issuelist.ReFormDate) {
-              dt = new Date(issuelist.ReFormDate);
-			this.fixtime = dt.toLocaleString();
+				dt = new Date(issuelist.ReFormDate);
+				this.fixtime = dt.toLocaleString();
 			}
-			
+
 			this.status = issuelist.IssueStatus;
 			this.versionid = issuelist.VersionId;
 			this.ResponsibleId = issuelist.ResponsibleId;
@@ -117,6 +117,7 @@ export class IssueviewPage {
 			if (issuelist.ImgAfter1) {
 				this.initBaseDB.getimagedata(this.projid, issuelist.ImgAfter1).then((v1: any) => {
 					this.imagesfixed.push('data:image/jpeg;base64,' + v1.rows.item(0).src);
+					console.log('data:image/jpeg;base64,' + v1.rows.item(0).src);
 					if (issuelist.ImgAfter2) {
 						this.initBaseDB.getimagedata(this.projid, issuelist.ImgAfter2).then((v2: any) => {
 							this.imagesfixed.push('data:image/jpeg;base64,' + v2.rows.item(0).src);
@@ -160,19 +161,21 @@ export class IssueviewPage {
 	passclick() {
 		let tablename = this.initBaseDB.getissuetablename(this.type);
 		let upltablename = this.initBaseDB.getuplissuetablename(this.type);
+		let now = new Date();
+		let curtime: string = now.toLocaleDateString() + " " + now.getHours().toString() + ":" + now.getMinutes() + ":" + now.getSeconds();
+
 		if (this.versionid == 0) {
-			let sql = "update #tablename# set IssueStatus = '已通过', ReviewDate = datetime('now', 'localtime'), EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#'";
+			let sql = "update #tablename# set IssueStatus = '已通过', ReviewDate = '" + curtime + "', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#'";
 			sql = sql.replace("#tablename#", tablename).replace("#userid#", this.userid).replace('#issueid#', this.issueid).replace('#username#', this.username);
 			this.initBaseDB.updateIssue([sql]).then(v => {
-				this.initBaseDB.updateuploadflag(this.projid, this.batchid, this.buildingid, this.type).then(v=>{
+				this.initBaseDB.updateuploadflag(this.projid, this.batchid, this.buildingid, this.type).then(v => {
 					this.navCtrl.pop();
 				})
 			}).catch(err => {
-				console.log('通过失败:' + err);
-				alert('通过失败:' + err);
+				console.log('通过失败:' + err);				
 			})
 		} else {
-			let sql = "update #tablename# set IssueStatus = '已通过', ReviewDate = datetime('now', 'localtime'), EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#' ";
+			let sql = "update #tablename# set IssueStatus = '已通过', ReviewDate = '" + curtime + "', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#' ";
 			sql = sql.replace("#tablename#", tablename).replace("#userid#", this.userid).replace('#issueid#', this.issueid).replace('#username#', this.username);
 			let uplsql = "select id from #upltablename# where id = '" + this.issueid + "'";
 			uplsql = uplsql.replace('#upltablename#', upltablename);
@@ -186,7 +189,7 @@ export class IssueviewPage {
 				let sqls = [];
 				sqls.push(sql);
 				if (val && val.rows.length > 0) {
-					sql = "update #upltablename# set IssueStatus = '已通过', ReviewDate = datetime('now', 'localtime'), EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#' ";
+					sql = "update #upltablename# set IssueStatus = '已通过', ReviewDate = '" + curtime + "', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#' ";
 					sql = sql.replace('#upltablename#', upltablename).replace('#userid#', this.userid).replace('#issueid#', this.issueid).replace('#username#', this.username);
 				} else {
 					sql = "insert into #upltablename# (Id,BatchId,RoomId,ProjId,VersionId,BuildingId,IssueStatus,EngineerPhone,EngineerName,ReviewDate) values (#values#)";
@@ -200,7 +203,7 @@ export class IssueviewPage {
 					value.push("'已通过'");
 					value.push("'" + this.userid + "'");
 					value.push("'" + this.username + "'");
-					value.push("datetime('now', 'localtime')");
+					value.push("'" + curtime + "'");
 					sql = sql.replace('#upltablename#', upltablename).replace('#values#', value.join(','));
 				}
 				sqls.push(sql);
@@ -211,7 +214,6 @@ export class IssueviewPage {
 				this.navCtrl.pop();
 			}).catch(err => {
 				console.log('通过失败:' + err);
-				alert('通过失败:' + err);
 			})
 		}
 	}
@@ -223,6 +225,9 @@ export class IssueviewPage {
 		});
 		modal.onDidDismiss(result => {
 			if (result) {
+				let now = new Date();
+				let curtime: string = now.toLocaleDateString() + " " + now.getHours().toString() + ":" + now.getMinutes() + ":" + now.getSeconds();
+
 				let status: string;
 				if (this.ResponsibleId === '' || this.ResponsibleId === 'null') {
 					status = '待派单';
@@ -230,19 +235,19 @@ export class IssueviewPage {
 					status = '待整改';
 				}
 				if (this.versionid == 0) {
-					let sql = "update #tablename# set IssueStatus = '#status#', ReturnDate = datetime('now', 'localtime'),ReturnReason = '#ReturnReason#', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '',ReturnNum = ReturnNum+1 where Id = '#issueid#'";
+					let sql = "update #tablename# set IssueStatus = '#status#', ReturnDate = '" + curtime + "',ReturnReason = '#ReturnReason#', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '',ReturnNum = ReturnNum+1 where Id = '#issueid#'";
 					sql = sql.replace("#tablename#", tablename).replace("#userid#", this.userid).replace('#issueid#', this.issueid).replace('#status#', status).replace('#ReturnReason#', result).replace('#username#', this.username);
+					console.log(sql);
 					this.initBaseDB.updateIssue([sql]).then(v => {
 						console.log(sql);
-						this.initBaseDB.updateuploadflag(this.projid, this.batchid, this.buildingid, this.type).then(v=>{
+						this.initBaseDB.updateuploadflag(this.projid, this.batchid, this.buildingid, this.type).then(v => {
 							this.navCtrl.pop();
 						})
 					}).catch(err => {
 						console.log('退回失败:' + err);
-						alert('退回失败:' + err);
 					})
 				} else {
-					let sql = "update #tablename# set IssueStatus = '#status#', ReturnDate = datetime('now', 'localtime'), ReturnReason = '#ReturnReason#',EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '',ReturnNum = ReturnNum+1 where Id = '#issueid#' ";
+					let sql = "update #tablename# set IssueStatus = '#status#', ReturnDate = '" + curtime + "', ReturnReason = '#ReturnReason#',EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '',ReturnNum = ReturnNum+1 where Id = '#issueid#' ";
 					sql = sql.replace("#tablename#", tablename).replace("#userid#", this.userid).replace('#issueid#', this.issueid).replace('#status#', status).replace('#ReturnReason#', result).replace('#username#', this.username);
 					let uplsql = "select id from #upltablename# where id = '" + this.issueid + "'";
 					uplsql = uplsql.replace("#upltablename#", upltablename);
@@ -250,20 +255,20 @@ export class IssueviewPage {
 					let promise = new Promise((resolve) => {
 						resolve(100);
 					});
-
+                    console.log(uplsql);
 					promise.then(v1 => {
 						return this.initBaseDB.currentdb().executeSql(uplsql, []);
 					}).then((val: any) => {
 						let sqls = [];
 						sqls.push(sql);
 						if (val && val.rows.length > 0) {
-							sql = "update #upltablename# set IssueStatus = '#status#', ReturnDate = datetime('now', 'localtime'), ReturnReason = '#ReturnReason#', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#' ";
+							sql = "update #upltablename# set IssueStatus = '#status#', ReturnDate = '" + curtime + "', ReturnReason = '#ReturnReason#', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#' ";
 							sql = sql.replace("#upltablename#", upltablename).replace('#userid#', this.userid).replace('#issueid#', this.issueid).replace('#status#', status).replace('#ReturnReason#', result).replace('#username#', this.username);
 						} else {
 							sql = "insert into #upltablename# (Id,BatchId,RoomId,ProjId,VersionId,BuildingId,IssueStatus,EngineerPhone,EngineerName,ReturnDate,ReturnReason) values (#values#)";
 							let value = [];
 							value.push("'" + this.issueid + "'");
-							value.push("'" + this.batchid + "'");							
+							value.push("'" + this.batchid + "'");
 							value.push("'" + this.roomid + "'");
 							value.push("'" + this.projid + "'");
 							value.push(this.versionid);
@@ -271,12 +276,12 @@ export class IssueviewPage {
 							value.push("'" + status + "'");
 							value.push("'" + this.userid + "'");
 							value.push("'" + this.username + "'");
-							value.push("datetime('now', 'localtime')");
+							value.push("'" + curtime + "'");
 							value.push("'" + result + "'");
 							sql = sql.replace("#upltablename#", upltablename).replace('#values#', value.join(','));
 						}
 						sqls.push(sql);
-						console.log("reject:"+sqls);
+						console.log("reject:" + sqls);
 						return this.initBaseDB.updateIssue(sqls);
 					}).then(v => {
 						return this.initBaseDB.updateuploadflag(this.projid, this.batchid, this.buildingid, this.type);
@@ -284,7 +289,6 @@ export class IssueviewPage {
 						this.navCtrl.pop();
 					}).catch(err => {
 						console.log('退回失败:' + err);
-						alert('退回失败:' + err);
 					})
 				}
 			}
@@ -300,6 +304,9 @@ export class IssueviewPage {
 			console.log(result);
 			if (result) {
 				console.log('if');
+				let now = new Date();
+				let curtime: string = now.toLocaleDateString() + " " + now.getHours().toString() + ":" + now.getMinutes() + ":" + now.getSeconds();
+
 				let reason: string; reason = result[0].reason; console.log(reason);
 				let imgs: Array<any>; imgs = []; imgs = result[0].img; console.log(imgs);
 				let status: string; status = '非正常关闭';
@@ -312,15 +319,14 @@ export class IssueviewPage {
 							setimg += ",ImgClose" + (i + 1).toString() + "='" + v2[i] + "'";
 							console.log(setimg);
 						}
-						let sql = "update #tablename# set IssueStatus = '#status#', CloseDate = datetime('now', 'localtime'),CloseReason = '#CloseReason#', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' #img# where Id = '#issueid#'";
+						let sql = "update #tablename# set IssueStatus = '#status#', CloseDate = '" + curtime + "',CloseReason = '#CloseReason#', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' #img# where Id = '#issueid#'";
 						sql = sql.replace("#tablename#", tablename).replace("#userid#", this.userid).replace('#issueid#', this.issueid).replace('#status#', status).replace('#CloseReason#', reason).replace('#img#', setimg).replace('#username#', this.username);
 						this.initBaseDB.updateIssue([sql]).then(v => {
-							this.initBaseDB.updateuploadflag(this.projid, this.batchid, this.buildingid, this.type).then(v=>{
+							this.initBaseDB.updateuploadflag(this.projid, this.batchid, this.buildingid, this.type).then(v => {
 								this.navCtrl.pop();
 							})
 						}).catch(err => {
 							console.log('非正常关闭:' + err);
-							alert('非正常关闭:' + err);
 						})
 					} else {
 						let setimg = '';
@@ -328,7 +334,7 @@ export class IssueviewPage {
 							setimg += ",ImgClose" + (i + 1).toString() + "='" + v2[i] + "'";
 							console.log(setimg);
 						}
-						let sql = "update #tablename# set IssueStatus = '#status#', CloseDate = datetime('now', 'localtime'), CloseReason = '#CloseReason#',EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' #img#  where Id = '#issueid#' ";
+						let sql = "update #tablename# set IssueStatus = '#status#', CloseDate = '" + curtime + "', CloseReason = '#CloseReason#',EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' #img#  where Id = '#issueid#' ";
 						sql = sql.replace("#tablename#", tablename).replace("#userid#", this.userid).replace('#issueid#', this.issueid).replace('#status#', status).replace('#CloseReason#', reason).replace('#img#', setimg).replace('#username#', this.username);
 						let uplsql = "select id from #upltablename# where id = '" + this.issueid + "'";
 						uplsql = uplsql.replace('#upltablename#', upltablename);
@@ -343,7 +349,7 @@ export class IssueviewPage {
 							let sqls = [];
 							sqls.push(sql);
 							if (val && val.rows.length > 0) {
-								sql = "update #upltablename# set IssueStatus = '#status#', CloseDate = datetime('now', 'localtime'), CloseReason = '#CloseReason#',EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' #img#  where Id = '#issueid#' ";
+								sql = "update #upltablename# set IssueStatus = '#status#', CloseDate = '" + curtime + "', CloseReason = '#CloseReason#',EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' #img#  where Id = '#issueid#' ";
 								sql = sql.replace("#upltablename#", upltablename).replace('#userid#', this.userid).replace('#issueid#', this.issueid).replace('#status#', status).replace('#CloseReason#', reason).replace('#img#', setimg).replace('#username#', this.username);
 							} else {
 								sql = "insert into #upltablename# (Id,BatchId,RoomId,ProjId,VersionId,BuildingId,IssueStatus,EngineerPhone,EngineerName,CloseDate,CloseReason #imgfield#) values (#values#)";
@@ -357,7 +363,7 @@ export class IssueviewPage {
 								value.push("'" + status + "'");
 								value.push("'" + this.userid + "'");
 								value.push("'" + this.username + "'");
-								value.push("datetime('now', 'localtime')");
+								value.push("'" + curtime + "'");
 								value.push("'" + reason + "'");
 								let imgfields = '';
 								for (var j = 0; j < v2.length; j++) {
@@ -375,7 +381,6 @@ export class IssueviewPage {
 							this.navCtrl.pop();
 						}).catch(err => {
 							console.log('非正常关闭:' + err);
-							alert('非正常关闭:' + err);
 						})
 					}
 				})
@@ -387,19 +392,21 @@ export class IssueviewPage {
 	cancelclick() {
 		let tablename = this.initBaseDB.getissuetablename(this.type);
 		let upltablename = this.initBaseDB.getuplissuetablename(this.type);
+		let now = new Date();
+		let curtime: string = now.toLocaleDateString() + " " + now.getHours().toString() + ":" + now.getMinutes() + ":" + now.getSeconds();
+
 		if (this.versionid == 0) {
-			let sql = "update #tablename# set IssueStatus = '已作废', CancelDate = datetime('now', 'localtime'), EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#'";
+			let sql = "update #tablename# set IssueStatus = '已作废', CancelDate = '" + curtime + "', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#'";
 			sql = sql.replace("#tablename#", tablename).replace("#userid#", this.userid).replace('#issueid#', this.issueid).replace('#username#', this.username);
 			this.initBaseDB.updateIssue([sql]).then(v => {
-				this.initBaseDB.updateuploadflag(this.projid, this.batchid, this.buildingid, this.type).then(v=>{
+				this.initBaseDB.updateuploadflag(this.projid, this.batchid, this.buildingid, this.type).then(v => {
 					this.navCtrl.pop();
 				})
 			}).catch(err => {
 				console.log('通过失败:' + err);
-				alert('通过失败:' + err);
 			})
 		} else {
-			let sql = "update #tablename# set IssueStatus = '已作废', CancelDate = datetime('now', 'localtime'), EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#' ";
+			let sql = "update #tablename# set IssueStatus = '已作废', CancelDate = '" + curtime + "', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#' ";
 			sql = sql.replace("#tablename#", tablename).replace("#userid#", this.userid).replace('#issueid#', this.issueid).replace('#username#', this.username);
 			let uplsql = "select id from #upltablename# where id = '" + this.issueid + "'";
 			uplsql = uplsql.replace('#upltablename#', upltablename);
@@ -414,7 +421,7 @@ export class IssueviewPage {
 				let sqls = [];
 				sqls.push(sql);
 				if (val && val.rows.length > 0) {
-					sql = "update #upltablename# set IssueStatus = '已作废', CancelDate = datetime('now', 'localtime'), EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#' ";
+					sql = "update #upltablename# set IssueStatus = '已作废', CancelDate = '" + curtime + "', EngineerName = '#username#',EngineerPhone = '#userid#',EngineerId = '' where Id = '#issueid#' ";
 					sql = sql.replace("#upltablename#", upltablename).replace('#userid#', this.userid).replace('#issueid#', this.issueid).replace('#username#', this.username);
 				} else {
 					sql = "insert into #upltablename# (Id,BatchId,RoomId,ProjId,VersionId,BuildingId,IssueStatus,EngineerPhone,EngineerName,CancelDate) values (#values#)";
@@ -428,7 +435,7 @@ export class IssueviewPage {
 					value.push("'已作废'");
 					value.push("'" + this.userid + "'");
 					value.push("'" + this.username + "'");
-					value.push("datetime('now', 'localtime')");
+					value.push("'" + curtime + "'");
 					sql = sql.replace("#upltablename#", upltablename).replace('#values#', value.join(','));
 				}
 				sqls.push(sql);
@@ -439,14 +446,32 @@ export class IssueviewPage {
 				this.navCtrl.pop();
 			}).catch(err => {
 				console.log('作废失败:' + err);
-				alert('作废失败:' + err);
 			})
 		}
 	}
 
 	//点击图片放大
-	showBigImage(imageName) {  //传递一个参数（图片的URl）
-		this.navCtrl.push(ShowimgPage, { imgdata: imageName });
+	// showBigImage(imageName) {  //传递一个参数（图片的URl）
+	// 	this.navCtrl.push(ShowimgPage, { imgdata: imageName });
+	// };
+
+	showBigImage(imagesrc, fixedflag: number = 0) {  //传递一个参数（图片的URl）
+		let i = 0;
+		if (fixedflag == 0) {
+			this.images.forEach(element => {
+				if (element == imagesrc) {
+					this.navCtrl.push(ShowimgPage, { imgdata: this.images, num: i });
+				}
+				i++;
+			})
+		} else {
+			this.imagesfixed.forEach(element => {
+				if (element == imagesrc) {
+					this.navCtrl.push(ShowimgPage, { imgdata: this.imagesfixed, num: i });
+				}
+				i++;
+			})
+		}
 	};
 
 	// deleteimage(imagesrc) {

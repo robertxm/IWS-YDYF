@@ -40,6 +40,9 @@ export class NativeService {
     console.log('%cNativeService/' + info, 'color:#e8c406');
   }
 
+  alert(info):Promise<any>{
+    return this.dialogs.alert(info,"提示","确定")
+  }
 
   /**
    * 通过浏览器打开url
@@ -198,7 +201,9 @@ export class NativeService {
         let networktype = this.getNetworkType();
         resolve(networktype);
       });
+      
       resolve(promise.then((networktype) => {
+        console.log(networktype);
         if (networktype == 'none') {
           this.showToast("您的当前网络不可用,请检查您的网络设置.");
           return false;
@@ -207,7 +212,7 @@ export class NativeService {
           return true;
         else {
           console.log("checknetwork");
-          this.dialogs.confirm('你正使用2g/3g/4g/网络，是否同意上传和下载?', '', ['不允许', '同意'])
+          return this.dialogs.confirm('你正使用2g/3g/4g/网络，是否同意上传和下载?', '', ['不允许', '同意'])
             .then(val => {
               if (val = 2) {
                 console.log("ok checknetwork");

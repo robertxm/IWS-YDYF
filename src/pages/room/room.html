@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title left>{{buildingname}}{{roomname}}</ion-title>
     <ion-buttons right>
       <button ion-button (click)="listshowclick()">{{liststr}}
@@ -38,7 +38,7 @@
     <ion-item *ngFor="let issue of issues" (click)="listclick(issue.id)">
       <ion-label>
         <p>
-          <span style="width:60%; display:inline-block;">          
+          <span style="width:60%; display:inline-block;line-height:18px">          
 					  <span *ngIf="issue.status=='待派单'" style="background-color:blueviolet;width:12px;height:12px;border-radius:6px;display:inline-block;"></span> 
             <span *ngIf="issue.status=='待整改'" style="background-color:red;width:12px;height:12px;border-radius:6px;display:inline-block;"></span>
             <span *ngIf="issue.status=='已整改'" style="background-color:blue;width:12px;height:12px;border-radius:6px;display:inline-block;"></span>
@@ -54,9 +54,9 @@
           </span>
         </p>
         <!--<p>&nbsp;</p>-->
-        <h2>{{issue.position}}&nbsp; 紧急程度:{{issue.UrgencyId}} &nbsp;整改时限:{{issue.duedate}}</h2>
-        <h2>{{issue.checkitem}}:{{issue.IssueDesc}} &nbsp;{{issue.PlusDesc}}</h2>
-        <p><span style="width:50%; display: inline-block; ">工程师: {{issue.EngineerName}}  &nbsp;&nbsp;   负责人: {{issue.ResponsibleName}}&nbsp;&nbsp;状态:{{issue.status}} </span>
+        <h2 style="line-height:26px">{{issue.position}}&nbsp; 紧急程度:{{issue.UrgencyId}} &nbsp;整改时限:{{issue.duedate}}</h2>
+        <h2 style="line-height:26px">{{issue.checkitem}}:{{issue.IssueDesc}} &nbsp;{{issue.PlusDesc}}</h2>
+        <p><span style="width:50%; display: inline-block;line-height:26px ">工程师: {{issue.EngineerName}}  &nbsp;&nbsp;   负责人: {{issue.ResponsibleName}}&nbsp;&nbsp;状态:{{issue.status}} </span>
           <!--<span style="width:50%; display: inline-block; text-align:right; ">&nbsp;整改时限：{{issue.duedate}}</span>-->
         </p>
       </ion-label>
@@ -65,7 +65,33 @@
 
 </ion-content>
 
-<ion-footer *ngIf="type == 3 && userrole.indexOf('A6') != -1">
+<ion-footer *ngIf="type == 1 && userrole.indexOf('A4') != -1">
+  <div *ngIf="readonly==false">
+    <table width="100%">
+      <button ion-button color="default" full (click)="doPass()">通过</button>
+    </table>
+  </div>
+  <div *ngIf="readonly">
+    <table width="100%">
+      <button ion-button color="default" full (click)="Passinfo()">通过信息</button>
+    </table>
+  </div>
+</ion-footer>
+
+<ion-footer *ngIf="type == 2 && userrole.indexOf('A6') != -1">
+  <div *ngIf="readonly==false">
+    <table width="100%">
+      <button ion-button color="default" full (click)="doReceipt()">接待</button>
+    </table>
+  </div>
+  <div *ngIf="readonly">
+    <table width="100%">
+      <button ion-button color="default" full (click)="Receiptinfo()">接待信息</button>
+    </table>
+  </div>
+</ion-footer>
+
+<ion-footer *ngIf="type == 3 && userrole.indexOf('A7') != -1">
   <div *ngIf="readonly==false">
     <table width="100%">
       <tr>

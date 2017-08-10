@@ -41,6 +41,8 @@ import { BuilderIssueDetail } from '../pages/builder-issue-detail/builder-issue-
 import { BuilderIssuePosition } from '../pages/builder-issue-position/builder-issue-position';
 import { BuilderReturnIssue } from '../pages/builder-return-issue/builder-return-issue'; 
 import { AssignreturnPage } from '../pages/assignreturn/assignreturn'; 
+import { BuildermaintenancePage } from '../pages/buildermaintenance/buildermaintenance'; 
+import { PreroomspassPage } from '../pages/preroomspass/preroomspass'; 
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -97,14 +99,17 @@ import {InAppBrowser} from '@ionic-native/in-app-browser';
     BuilderIssueDetail,
     BuilderIssuePosition,
     BuilderReturnIssue,
-    AssignreturnPage
+    AssignreturnPage,
+    BuildermaintenancePage,
+    PreroomspassPage
   ],
   imports: [
     BrowserModule,
     HttpModule,
     SignaturePadModule,
     IonicModule.forRoot(MyApp, {
-      tabsHideOnSubPages: 'true'         //隐藏全部子页面tabs
+      tabsHideOnSubPages: 'true',         //隐藏全部子页面tabs
+      backButtonText: ' '
     }),
     IonicStorageModule.forRoot()
   ],
@@ -145,7 +150,9 @@ import {InAppBrowser} from '@ionic-native/in-app-browser';
     BuilderIssueDetail,
     BuilderIssuePosition,
     BuilderReturnIssue,
-    AssignreturnPage
+    AssignreturnPage,
+    BuildermaintenancePage,
+    PreroomspassPage
   ],
   providers: [
     StatusBar,

@@ -14,12 +14,14 @@ export class MyPage {
   username: string;
   vendrole: boolean;
   userrole: Array<string> = [];
+  token: string;
   constructor(public navCtrl: NavController, public localStorage: LocalStorage) {
 
     this.localStorage.getItem('curuser').then(val => {
       this.username = val.username;
       this.vendrole = val.vendrole;
       this.userrole = val.userrole;
+      this.token = val.token;
     })    
   }
 
@@ -32,7 +34,7 @@ export class MyPage {
   }
 
   mysettingsclick() {
-    this.navCtrl.push(MysettingsPage, { username: this.username, vendrole:this.vendrole });
+    this.navCtrl.push(MysettingsPage, { username: this.username, vendrole:this.vendrole, token:this.token });
   }
    
   myteamclick() {

@@ -8,63 +8,63 @@
     },
     "installed_plugins": {
         "cordova-plugin-app-version": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-camera": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-contacts": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-dialogs": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-http": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-plugin-x-toast": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "cordova-sqlite-storage": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         },
         "uk.co.workingedge.cordova.plugin.sqliteporter": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.ionicframework.myapp398494"
+            "PACKAGE_NAME": "com.xmiws.ydyf"
         }
     }
 }

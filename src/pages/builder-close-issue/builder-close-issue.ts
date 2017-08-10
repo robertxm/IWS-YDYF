@@ -13,7 +13,7 @@ import { ImageEditorModal } from '../../pages/imageeditor/imageeditormodal';
 export class BuilderCloseIssue {
 	username: string;
 	images: Array<any>;
-	imagesafter: Array<any>;
+	imagesfixed: Array<any>;
 	fixeddesc: string;
 	overdays: number;
 	reasonovertime: string = '';
@@ -21,13 +21,13 @@ export class BuilderCloseIssue {
 	reasonsovertimes = ["上个工序未按时完成", "人手不够", "部分工程师请假", "其他"];
 	//{"issueid":this.issueid,"userid":this.userid,"username":this.username,"images":this.images,"imagesfixed":this.imagesfixed}
 	constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, private modalCtrl: ModalController,
-		public params: NavParams, private viewCtrl: ViewController) {
+		public params: NavParams, private nativeService: NativeService, private viewCtrl: ViewController) {
 	}
 
 	ionViewDidLoad() {
-		this.images = []; this.imagesafter = [];
+		this.images = []; this.imagesfixed = [];
 		this.images = this.navParams.get('images');
-		//this.imagesafter = this.navParams.get('imagesfixed');
+		//this.imagesfixed = this.navParams.get('imagesfixed');
 		this.username = this.navParams.get('username');
 		this.overdays = this.navParams.get('overdays');
 	}
@@ -44,10 +44,10 @@ export class BuilderCloseIssue {
 		let ret: boolean = true;
 		if (this.overdays > 0 && this.reasonovertime == '') {
 			ret = false;
-			alert("已超时，需选择超时原因.")
+			this.nativeService.alert("已超时，需选择超时原因.")
 		} else if (this.reasonovertime == "其他" && this.reasonovertimeother == '') {
 			ret = false;
-			alert("超时原因选择其他，需填写其他说明.");
+			this.nativeService.alert("超时原因选择其他，需填写其他说明.");
 		}
 		return ret;
 	}
@@ -59,7 +59,7 @@ export class BuilderCloseIssue {
 				result = this.reasonovertimeother;
 			}
 			let results: Array<any>; results = [];
-			results.push({ reason: result, img: this.imagesafter,fixeddesc:this.fixeddesc });
+			results.push({ reason: result, img: this.imagesfixed,fixeddesc:this.fixeddesc });
 			console.log('confirmed:' + results);
 			this.viewCtrl.dismiss(results);
 		}
@@ -70,7 +70,8 @@ export class BuilderCloseIssue {
 			quality: 100,
 			destinationType: this.camera.DestinationType.DATA_URL,
 			encodingType: this.camera.EncodingType.JPEG,
-			mediaType: this.camera.MediaType.PICTURE
+			mediaType: this.camera.MediaType.PICTURE,
+			correctOrientation: true
 		}
 
 		this.camera.getPicture(options).then((imageData) => {
@@ -80,7 +81,7 @@ export class BuilderCloseIssue {
 			});
 			modal.onDidDismiss(result => {
 				if (result) {
-					this.imagesafter.push(result);
+					this.imagesfixed.push(result);
 				}
 			});
 			modal.present();
@@ -91,16 +92,29 @@ export class BuilderCloseIssue {
 
 	deleteimage(imagesrc) {
 		let i = 0;
-		this.imagesafter.forEach(element => {
+		this.imagesfixed.forEach(element => {
 			if (element == imagesrc)
-				this.imagesafter.splice(i, 1);
+				this.imagesfixed.splice(i, 1);
 			i++;
 		});
 	}
 	//点击图片放大
-	showBigImage(imageName) {  //传递一个参数（图片的URl）
-		this.navCtrl.push(ShowimgPage, { imgdata: imageName });
-		//this.url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
-		//this.bigImage = true;                   //显示大图		
+	showBigImage(imagesrc, fixedflag: number = 0) {  //传递一个参数（图片的URl）
+		let i = 0;
+		if (fixedflag == 0) {
+			this.images.forEach(element => {
+				if (element == imagesrc) {
+					this.navCtrl.push(ShowimgPage, { imgdata: this.images, num: i });
+				}
+				i++;
+			})
+		} else {
+			this.imagesfixed.forEach(element => {
+				if (element == imagesrc) {
+					this.navCtrl.push(ShowimgPage, { imgdata: this.imagesfixed, num: i });
+				}
+				i++;
+			})
+		}
 	};
 }

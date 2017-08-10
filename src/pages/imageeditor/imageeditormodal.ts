@@ -47,17 +47,17 @@ export class ImageEditorModal {
         const bodyWidth = this.canvasDisplay.nativeElement.offsetWidth;
         const bodyHeight = this.canvasDisplay.nativeElement.offsetHeight;
         const bodyRate = bodyWidth / bodyHeight;
-        this.image.onload = val => {
+        this.image.onload = val => {            
             this.imageWidth = this.image.width;
-            this.imageHeight = this.image.height;
+            this.imageHeight = this.image.height;         
             let canvasWidth = 0
             let canvasHeight = 0;
             if(this.image.width / this.image.height > bodyRate) {
                 canvasWidth = this.image.width > bodyWidth? bodyWidth: this.image.width;
-                canvasHeight = canvasWidth / this.image.width * this.image.height;
+                canvasHeight = canvasWidth / this.image.width * this.image.height;                
             } else {
                 canvasHeight = this.image.height > bodyHeight? bodyHeight: this.image.height;
-                canvasWidth = canvasHeight / this.image.height * this.image.width;
+                canvasWidth = canvasHeight / this.image.height * this.image.width;                
             }
 
             this.canvas.width = canvasWidth;//nativeElement
@@ -118,7 +118,7 @@ export class ImageEditorModal {
         this.context.fillStyle = "#ffffff";
         this.context.fillText(text, fleft, ftop);//文本元素在画布居中方式
         this.context.save();
-        let newsrc = this.canvas.toDataURL('image/jpeg', 0.90);   //nativeElement   
+        let newsrc = this.canvas.toDataURL('image/jpeg',9.2);   //nativeElement   
         this.viewCtrl.dismiss(newsrc);//'data:image/jpeg;base64,' + imageData);
     }
 

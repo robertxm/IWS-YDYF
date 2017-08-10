@@ -1,8 +1,8 @@
-<!--<ion-header>
-    <ion-navbar>
-        <ion-title>{{buildingname}}{{titlename}}</ion-title>
+<ion-header style = "background-color:black;">
+    <ion-navbar color="dark" >
+        <ion-title style="color:white" >{{nums}}</ion-title>
     </ion-navbar>
-</ion-header>-->
+</ion-header>
 <!--<ion-content>-->
   <!--<div id="rightDisplay" class="popover-backdrop"
      style="position: fixed;top: 0;left: 0;z-index: 0; width: 100%;height: 100%;"
@@ -14,10 +14,40 @@
   </div> -->
 <!--</ion-content>-->
 
-<ion-content padding style="background-color:black" (click)="hideBigImage()">
-<div id="showimg">
+<!--<div id="showimg">
     <div id="showcontainer" style="overflow:hidden; height:600px;border:solid 1px #222;" >
       <div id="showstage" style="width: 100%;height:600px;background-size: contain;background-repeat: no-repeat; position:relative;"></div>
     </div>
-  </div>
+  </div>-->
+ <!--(click)="hideBigImage()"-->
+<ion-content padding style="background-color:black">
+  <ion-slides (ionSlideDidChange)="slideChanged()" zoom = true>
+  <ion-slide >
+     <!--<h2 style="color:white">{{nums}}</h2>
+     <p></p>-->
+     <div id="showimg1">
+    <div id="showcontainer1" style="overflow:hidden; height:600px;border:solid 1px black;" >
+      <div id="showstage1" style="width: 100%;height:600px;background-size: contain;background-repeat: no-repeat; position:relative;"></div>
+    </div>
+  </div>    
+  </ion-slide>
+  <ion-slide>
+     <!--<h2 style="color:white">{{nums}}</h2>
+     <p></p>-->
+     <div id="showimg2">
+    <div id="showcontainer2" style="overflow:hidden; height:600px;border:solid 1px black;" >
+      <div id="showstage2" style="width: 100%;height:600px;background-size: contain;background-repeat: no-repeat; position:relative;"></div>
+    </div>
+  </div>    
+  </ion-slide>
+  <ion-slide >
+     <!--<h2 style="color:white">{{nums}}</h2>
+     <p></p>-->
+     <div id="showimg3" >
+    <div id="showcontainer3" style="overflow:hidden; height:600px;border:solid 1px black;" >
+      <div id="showstage3" style="width: 100%;height:600px;background-size: contain;background-repeat: no-repeat; position:relative;"></div>
+    </div>
+  </div>    
+  </ion-slide>
+</ion-slides>
 </ion-content>

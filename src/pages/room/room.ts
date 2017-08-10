@@ -6,9 +6,10 @@ import { IssueviewPage } from '../issueview/issueview';
 import { RejectPage } from '../reject/reject';
 import { ReceiptPage } from '../receipt/receipt';
 import { initBaseDB } from '../../providers/initBaseDB';
+import { PreroomspassPage } from '../preroomspass/preroomspass';
 
 @Component({
-	selector: 'page-room',
+	selector: 'page-room',    
 	templateUrl: 'room.html',
 })
 export class RoomPage implements OnInit {
@@ -34,6 +35,7 @@ export class RoomPage implements OnInit {
 	liststr: string;
 	userrole: Array<string> = [];
 	floorid: string;
+	stage: any;
 	constructor(public navCtrl: NavController, public params: NavParams, public initBaseDB: initBaseDB,
 		public localStorage: LocalStorage, public loadingCtrl: LoadingController) {
 		this.projid = this.params.get('projid');
@@ -57,6 +59,7 @@ export class RoomPage implements OnInit {
 			}
 		})
 		this.dwgInfo = {};
+		console.log("constructor");
 	}
 
 	listshowclick() {
@@ -95,6 +98,14 @@ export class RoomPage implements OnInit {
 		this.navCtrl.push(ReceiptPage, { "readonly": this.readonly, "username": this.username, "roomid": this.roomid, "projid": this.projid, "projname": this.projname, "batchid": this.batchid, "buildingid": this.buildingid, "buildingname": this.buildingname, "roomname": this.roomname, "type": this.type });
 	};
 
+	doPass() {
+		this.navCtrl.push(PreroomspassPage, { "readonly": this.readonly, "username": this.username, "roomid": this.roomid, "projid": this.projid, "projname": this.projname, "batchid": this.batchid, "buildingid": this.buildingid, "buildingname": this.buildingname, "roomname": this.roomname, "type": this.type });
+	};
+
+	Passinfo() {
+		this.navCtrl.push(PreroomspassPage, { "readonly": this.readonly, "username": this.username, "roomid": this.roomid, "projid": this.projid, "projname": this.projname, "batchid": this.batchid, "buildingid": this.buildingid, "buildingname": this.buildingname, "roomname": this.roomname, "type": this.type });
+	};
+
 	drawIssue(issueid: string, issue: any) {
 		let div = document.createElement('div'); console.log(this.dwgFactor);
 		div.style.backgroundColor = this.initBaseDB.getstatuscolor(issue.status);
@@ -105,8 +116,8 @@ export class RoomPage implements OnInit {
 		div.style.left = (issue.x / this.dwgFactor - 8) + 'px';
 		div.style.top = (issue.y / this.dwgFactor - 8) + 'px';
 		div.onclick = (e) => {
-			// e.preventDefault();
-			// e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 			// console.log(e);
 			this.navCtrl.push(IssueviewPage, { issueid: issueid, projid: this.projid, batchid: this.batchid, buildingid: this.buildingid, buildingname: this.buildingname, roomid: this.roomid, roomname: this.roomname, type: this.type });
 		}
@@ -145,22 +156,22 @@ export class RoomPage implements OnInit {
 	loadRommInfo() {
 		console.log("loadRommInfo");
 		this.initBaseDB.getissuelist(this.projid, this.batchid, this.roomid, this.type).then(res => {
+			console.log('getissuelist')
 			this.issues = res[0];
 			this.readycounts = res[1]; this.forfixcounts = res[2]; this.fixedcounts = res[3]; this.passcounts = res[4];
 			this.issues.forEach(issue => {
 				this.drawIssue(issue.id, issue);
 			});
 		})
-		this.initBaseDB.getroomdetails(this.roomid, this.batchid).then(val => {
+		this.initBaseDB.getroomdetails(this.roomid, this.batchid, this.type).then(val => {
 			if (val) {
-				if (val.rows.item(0).RoomStatus == "已交付") {
+				if (val.rows.item(0).RoomStatus == "已交付" || val.rows.item(0).RoomStatus == "已通过" || val.rows.item(0).RoomStatus == "已接待") {
 					this.readonly = true;
 				}
 			}
 		})
 	}
 
-	stage: any;
 	ngOnInit() {
 		var stage = document.getElementById('stage');
 		this.stage = stage;
@@ -222,20 +233,20 @@ export class RoomPage implements OnInit {
 		});
 		// this.initBaseDB.testsql(this.roomid).then(val => {
 
-        console.log("getdrawinfo");
-			this.initBaseDB.getdrawinfo(this.projid, this.roomid).then(val => {
-				if (val) {
-					this.dwgInfo = val[0];console.log(this.dwgInfo);
-					this.dwgFactor = this.dwgInfo.width / this.stage.offsetWidth;
-					let src = 'data:image/jpeg;base64,' + this.dwgInfo.src;  //data:image/jpeg;base64,				
-					this.stage.style.backgroundImage = 'url(' + src + ')';//this.stage.style.backgroundImage = 'url(' + this.dwgInfo.src + ')'; 				
-				} else {
-					this.stage.style.backgroundImage = '';
-					this.stage.style.textAlign = "center";
-					this.stage.style.lineHeight = "400px";
-					this.stage.innerText = '没有数据！请返回。';
-				}
-			})
+		console.log("getdrawinfo");
+		this.initBaseDB.getdrawinfo(this.projid, this.roomid).then(val => {
+			if (val) {
+				this.dwgInfo = val[0]; console.log(this.dwgInfo);
+				this.dwgFactor = this.dwgInfo.width / this.stage.offsetWidth;
+				let src = 'data:image/jpeg;base64,' + this.dwgInfo.src;  //data:image/jpeg;base64,				
+				this.stage.style.backgroundImage = 'url(' + src + ')';//this.stage.style.backgroundImage = 'url(' + this.dwgInfo.src + ')'; 				
+			} else {
+				this.stage.style.backgroundImage = '';
+				this.stage.style.textAlign = "center";
+				this.stage.style.lineHeight = "400px";
+				this.stage.innerText = '没有数据！请返回。';
+			}
+		})
 		// })
 	}
 

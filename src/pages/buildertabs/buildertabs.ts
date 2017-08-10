@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { AboutPage } from '../about/about';
 import { MyPage } from '../mypage/mypage';
 import { BuilderPage } from '../builder/builder';
-import { PreinspectionPage } from '../preinspection/preinspection';
+import { BuildermaintenancePage } from '../buildermaintenance/buildermaintenance'; 
 
 @Component({
   templateUrl: 'buildertabs.html'
 })
 export class BuilderTabsPage {
   tab1Root = BuilderPage;
-  tab2Root = PreinspectionPage;
+  tab2Root = BuildermaintenancePage;
   tab3Root = MyPage;
 
   constructor() {

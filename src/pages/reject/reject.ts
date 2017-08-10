@@ -62,6 +62,9 @@ export class RejectPage {
     console.log(this.rejectreason + this.plusdesc);
     let sql = "insert into RoomNoAcceptLogs (ProjId,BatchId,RoomId,BuildingId,PlusDesc,VersionId,ID,ReasonNoAcceptId,UserName,TransDate) values(#values#)";
     let now = new Date();
+    
+    let curtime:string = now.toLocaleDateString()+" "+now.getHours().toString()+":"+now.getMinutes()+":"+now.getSeconds();
+        
     let value = [];
     value.push("'" + this.projid + "'");
     value.push("'" + this.batchid + "'");
@@ -72,17 +75,17 @@ export class RejectPage {
     value.push("'" + '' + now.valueOf() + Math.random() + "'");
     value.push("'" + this.rejectreason + "'");
     value.push("'" + this.username+ "'");
-    value.push("datetime('now', 'localtime')");
+    value.push("'"+curtime+"'");
     sql = sql.replace('#values#', value.join(','));
     console.log(sql);
     this.initBaseDB.currentdb().executeSql(sql, []).then(v=>{
       this.initBaseDB.updateuploadflag(this.projid, this.batchid, this.buildingid, this.type).then(v2=>{
          this.navCtrl.pop();
       }).catch(er=>{
-        alert("提交失败:"+er);
+        console.log("提交失败:"+er);
       })      
     }).catch(err=>{
-      alert("提交失败:"+err);
+      console.log("提交失败:"+err);
     })
   }
 

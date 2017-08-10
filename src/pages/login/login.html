@@ -11,30 +11,31 @@
   <ion-list>
 
     <ion-item>
-      <ion-img width="100%" height="{{imgheight}}" src="assets/img/login.jpg"></ion-img>
+      <img width="100%"  src="assets/img/login.jpg" />
     </ion-item>    
    
     <ion-item>
-      <ion-label color="primary">用户名</ion-label>
+      <ion-label top = '10px' color="primary" fixed>用户名</ion-label>      
       <ion-input type="text" placeholder="输入用户名" clearInput [(ngModel)]="userid"></ion-input>
     </ion-item>
 
 
     <ion-item>
-      <ion-label color="primary" fixed>密码</ion-label>
+      <ion-label color="primary" fixed>密   码</ion-label>
       <ion-input type="password" placeholder="输入密码" clearInput [(ngModel)]="password"></ion-input>
     </ion-item>
 
     <ion-item>
-      <button ion-button block (click)="loginclick()" style="height:4em">登陆</button>
-    </ion-item>
-  </ion-list>
+      <button ion-button block (click)="loginclick()" style="height:4em;font-size:14px">登 录</button>
+    </ion-item >
 
+
+	
+
+  </ion-list>  
   <!--<ion-item>
       <ion-label left>整改前照片</ion-label>
-      <ion-thumbnail item-right *ngFor="let item of images" style="margin:5px;min-width:50px;min-height:50px">
-        <img [src]="item" (click)="showBigImage(item)" style="width:50px; height:50px"/>
-      </ion-thumbnail>
+      s
     </ion-item>
 
     <ion-item>
@@ -43,18 +44,29 @@
         <img [src]="item" (click)="showBigImage(item)" style="width:50px; height:50px"/>
       </ion-thumbnail>
     </ion-item>-->
+    
+
     <!--<ion-item>
       <ion-label fixed>整改前照片</ion-label>
-      <ion-thumbnail item-right  style="margin:5px;min-width:50px;min-height:50px">
+      <table item-right style="width:70%;">
+      <tr>
+        <td >
+          <ion-thumbnail style="margin:5px;min-width:50px;min-height:50px;">
         <img src="assets/img/login.jpg" style="width:50px; height:50px"/>
       </ion-thumbnail>
-      <ion-thumbnail item-right  style="margin:5px;min-width:50px;min-height:50px">
+        </td>
+        <td >
+          <ion-thumbnail style="margin:5px;min-width:50px;min-height:50px">
         <img src="assets/img/login.jpg" style="width:50px; height:50px"/>
       </ion-thumbnail>
-      <ion-thumbnail item-right  style="margin:5px;min-width:50px;min-height:50px">
+        </td> <td >
+          <ion-thumbnail style="margin:5px;min-width:50px;min-height:50px">
         <img src="assets/img/login.jpg" style="width:50px; height:50px"/>
       </ion-thumbnail>
-    </ion-item>-->  
+        </td>   
+      </tr>
+    </table>
+    </ion-item>  -->
 
   <!--<table style="width:100%; text-align:center;">
     <tr>
